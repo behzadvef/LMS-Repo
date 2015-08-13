@@ -17,7 +17,7 @@ namespace LMS_Proj.Controllers
         // GET: Activities
         public ActionResult Index()
         {
-            var activities = db.Activities.Include(a => a.Attachment).Include(a => a.Groups);
+            var activities = db.Activities.Include(a => a.Attachment).Include(a => a.Groups).Include(a => a.Timesheet);
             return View(activities.ToList());
         }
 
@@ -41,6 +41,7 @@ namespace LMS_Proj.Controllers
         {
             ViewBag.FileId = new SelectList(db.Files, "FileId", "FileName");
             ViewBag.GroupId = new SelectList(db.Groups, "GroupID", "GroupName");
+            ViewBag.scheduleId = new SelectList(db.Schedules, "scheduleId", "room");
             return View();
         }
 
@@ -49,7 +50,7 @@ namespace LMS_Proj.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ActivityId,Name,StartDate,EndDate,Description,GroupId,FileId")] Activity activity)
+        public ActionResult Create([Bind(Include = "ActivityId,Name,StartDate,EndDate,Description,GroupId,FileId,scheduleId")] Activity activity)
         {
             if (ModelState.IsValid)
             {
@@ -60,6 +61,7 @@ namespace LMS_Proj.Controllers
 
             ViewBag.FileId = new SelectList(db.Files, "FileId", "FileName", activity.FileId);
             ViewBag.GroupId = new SelectList(db.Groups, "GroupID", "GroupName", activity.GroupId);
+            ViewBag.scheduleId = new SelectList(db.Schedules, "scheduleId", "room", activity.scheduleId);
             return View(activity);
         }
 
@@ -77,6 +79,7 @@ namespace LMS_Proj.Controllers
             }
             ViewBag.FileId = new SelectList(db.Files, "FileId", "FileName", activity.FileId);
             ViewBag.GroupId = new SelectList(db.Groups, "GroupID", "GroupName", activity.GroupId);
+            ViewBag.scheduleId = new SelectList(db.Schedules, "scheduleId", "room", activity.scheduleId);
             return View(activity);
         }
 
@@ -85,7 +88,7 @@ namespace LMS_Proj.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ActivityId,Name,StartDate,EndDate,Description,GroupId,FileId")] Activity activity)
+        public ActionResult Edit([Bind(Include = "ActivityId,Name,StartDate,EndDate,Description,GroupId,FileId,scheduleId")] Activity activity)
         {
             if (ModelState.IsValid)
             {
@@ -95,6 +98,7 @@ namespace LMS_Proj.Controllers
             }
             ViewBag.FileId = new SelectList(db.Files, "FileId", "FileName", activity.FileId);
             ViewBag.GroupId = new SelectList(db.Groups, "GroupID", "GroupName", activity.GroupId);
+            ViewBag.scheduleId = new SelectList(db.Schedules, "scheduleId", "room", activity.scheduleId);
             return View(activity);
         }
 

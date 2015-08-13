@@ -4,35 +4,89 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link rel="icon" href="@Url.Content("~/Images/favicon.ico")" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/LMS/css")
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+    @*<div class="navbar navbar-inverse navbar-fixed-top">*@
+        @*<div class="container">*@
+            @*<div class="navbar-header">
+                @*<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
+                </button>*@
+                @*@Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" }*@)
+                @*<a href="@Url.Action("Index", "Home", new { area = "" })" class="navbar-brand">
+                    <img src="~/Images/logo-lexicon@2x.gif" style="width: auto; height:80px; margin:30px 1px 30px 1px;" />
+
+                </a>*@
+            @*</div>*@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Files", "Index", "Files")</li>
-                    <li>@Html.ActionLink("Group", "Index", "Groups")</li>
-                    <li>@Html.ActionLink("Activties", "Index", "Activities")</li>
-                    <li>@Html.ActionLink("User List", "UserList", "Account")</li>
-                   <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li class="text-center">
+                        <a href="@Url.Action("Index", "Home")">
+                            <span class="glyphicon glyphicon-home"></span>
+                            Home
+                        </a>
+                    </li>
+                    <li class="text-center">
+                        <a href="@Url.Action("About", "Home")">
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                            About
+                        </a>
+                    </li>
+                    <li class="text-center">
+                        <a href="@Url.Action("Contact", "Home")">
+                            <span class="glyphicon glyphicon-envelope"></span>
+                            Contact
+                        </a>
+                    </li>
+  
                 </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
-        </div>
+            @Html.Partial("_LoginPartial")
     </div>
+
+        <header class="group" role="banner">
+            <div class="topbar">
+                <div class="group">
+                    <h1><img alt="" src="~/Images/logo-lexicon@2x.gif" width="232" height="80" alt="Lexicon Home" /></h1>
+                </div>
+            </div>
+            <nav id="nav" role="navigation">
+                <ul class="bg-col8">
+                    <li class="sub subopen current">
+                      @Html.ActionLink("Files", "Index", "Files")
+                    </li>
+                    <li class="sub">
+                        @Html.ActionLink("Group", "Index", "Groups")
+                    </li>
+                    <li class="sub">
+                    @Html.ActionLink("Activties", "Index", "Activities")
+                    </li>
+                    <li class="sub">
+                    @Html.ActionLink("Schedules", "Index", "Schedules")
+                    </li>
+                    <li class="sub">
+                    @Html.ActionLink("User List", "UserList", "Account")
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+
+
+
+
+
+
+        @*@Html.Partial("_LoginPartial")
+            </div>
+        </div>*@
+    @*</div>*@
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -40,7 +94,7 @@
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
-
+    <br /><br /><br /><br />
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

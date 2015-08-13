@@ -23,12 +23,18 @@ namespace LMS_Proj.Models
         }
 
 
+        // Attributes
+
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
 
         // Connection
 //        [ForeignKey("Group")]
-
         public int? GroupId { get; set; }
-        public Group Groups { get; set; }
+        public virtual Group Groups { get; set; }
        
         [ForeignKey("ApplicationUserId")]
         public virtual ICollection<File> Files { get; set; }
@@ -54,6 +60,8 @@ namespace LMS_Proj.Models
         public DbSet<File> Files { get; set; }
 
         public DbSet<Activity> Activities { get; set; }
+
+        public System.Data.Entity.DbSet<LMS_Proj.Models.Schedule> Schedules { get; set; }
 
 //        public System.Data.Entity.DbSet<LMS_Proj.Models.ApplicationUser> ApplicationUsers { get; set; }
 

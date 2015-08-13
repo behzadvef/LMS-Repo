@@ -56,6 +56,30 @@ namespace LMS_Proj.Migrations
             context.SaveChanges();
 
 
+            context.Schedules.AddOrUpdate(
+                new Schedule {
+                
+                   Title="Start the project LMS-Lexicon",
+                   room="Gama &",
+                   StartTime = new DateTime(2015, 08, 10, 9, 0,0),
+                   EndTime = new DateTime(2015, 08, 11, 12,0,0),
+                   
+                },
+
+                    new Schedule {
+                
+                   Title="Continue working on the project LMS-Lexicon",
+                   room="Alpha",
+                   StartTime = new DateTime(2015, 08, 12, 9, 0,0),
+                   EndTime = new DateTime(2015, 08, 13, 12,0,0),
+                   
+                }
+
+                );
+            context.SaveChanges();
+
+
+
 
             context.Activities.AddOrUpdate(
                 new Activity { Name = "C#", StartDate = new DateTime(2015, 5, 26, 9, 0, 0), EndDate = new DateTime(2015, 5, 26, 12, 0, 0), Description = "An Introduction to C#" },
