@@ -56,6 +56,15 @@ namespace LMS_Proj.Migrations
             context.SaveChanges();
 
 
+            if (!context.Users.Any(u => u.UserName == "DeletedUserHeir@admin.com"))
+            {
+                var user = new ApplicationUser { UserName = "DeletedUserHeir@admin.com", Email = "DeletedUserHeir@admin.com" };
+                userManager.Create(user, "Admin123!");
+                userManager.AddToRole(user.Id, "admin");
+            }
+            context.SaveChanges();
+
+
 
             context.Activities.AddOrUpdate(
                 new Activity { Name = "C#", StartDate = new DateTime(2015, 5, 26, 9, 0, 0), EndDate = new DateTime(2015, 5, 26, 12, 0, 0), Description = "An Introduction to C#" },

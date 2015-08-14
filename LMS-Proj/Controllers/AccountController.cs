@@ -9,6 +9,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using LMS_Proj.Models;
+using System.Collections.Generic;
+using System.Net;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace LMS_Proj.Controllers
 {
@@ -22,7 +25,7 @@ namespace LMS_Proj.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -34,9 +37,9 @@ namespace LMS_Proj.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -120,7 +123,7 @@ namespace LMS_Proj.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -139,9 +142,16 @@ namespace LMS_Proj.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            ViewBag.GroupId = AddFirstItem(new SelectList(db.Groups, "GroupId", "GroupName"));
             return View();
         }
 
+        private SelectList AddFirstItem(SelectList list)
+        {
+            List<SelectListItem> _list = list.ToList();
+            _list.Insert(0, new SelectListItem() { Value = null, Text = "   " });
+            return new SelectList((IEnumerable<SelectListItem>)_list, "Value", "Text");
+        }
 
         private ApplicationDbContext db = new ApplicationDbContext();
 
@@ -152,6 +162,84 @@ namespace LMS_Proj.Controllers
             return View(UserList.ToList());
         }
 
+        // GET: Account/Delete
+        public ActionResult Delete(string Id)
+        {
+            if (Id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUser user = db.Users.Find(Id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
+        }
+
+        // POST: /Users/Delete
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(string id)
+        {
+            if (ModelState.IsValid)
+            {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                var user = await UserManager.FindByIdAsync(id);
+                var logins = user.Logins;
+
+                foreach (var login in logins.ToList())
+                {
+                    await UserManager.RemoveLoginAsync(login.UserId, new UserLoginInfo(login.LoginProvider, login.ProviderKey));
+                }
+
+                var rolesForUser = await UserManager.GetRolesAsync(id);
+
+                if (rolesForUser.Count() > 0)
+                {
+                    foreach (var item in rolesForUser.ToList())
+                    {
+                        // item should be the name of the role
+                        var result = await UserManager.RemoveFromRoleAsync(user.Id, item);
+                    }
+                }
+
+
+
+
+                var DeletedFilesHeirId = (db.Users.First(a => a.UserName == "DeletedFilesHeir@admin.com")).Id;
+
+                foreach( File file in db.Files)
+                {
+                    if (file.ApplicationUserId == id)
+                        file.ApplicationUserId = DeletedFilesHeirId;
+                }
+                db.SaveChanges();
+                await UserManager.DeleteAsync(user);
+
+                return RedirectToAction("UserList");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
         //
         // POST: /Account/Register
         [HttpPost]
@@ -161,17 +249,27 @@ namespace LMS_Proj.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, GroupId = model.GroupId };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
+
+                    if (model.Role)
+                    {
+                        UserManager.AddToRole(user.Id, "admin");
+                    }
+                    //                    context.SaveChanges();
+
+
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
 
                     return RedirectToAction("Index", "Home");
                 }

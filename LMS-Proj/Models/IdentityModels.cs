@@ -33,6 +33,7 @@ namespace LMS_Proj.Models
 
         // Connection
 //        [ForeignKey("Group")]
+        [Display(Name = "Group")]
         public int? GroupId { get; set; }
         public virtual Group Groups { get; set; }
        
@@ -60,6 +61,8 @@ namespace LMS_Proj.Models
         public DbSet<File> Files { get; set; }
 
         public DbSet<Activity> Activities { get; set; }
+
+ //       public System.Data.Entity.DbSet<LMS_Proj.Models.ApplicationUser> ApplicationUsers { get; set; }
 
 //        public System.Data.Entity.DbSet<LMS_Proj.Models.ApplicationUser> ApplicationUsers { get; set; }
 

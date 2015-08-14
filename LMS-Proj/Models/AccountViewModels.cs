@@ -89,6 +89,15 @@ namespace LMS_Proj.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        [Display(Name = "Admin")]
+        public bool Role { get; set; }
+
+        [Display(Name = "Group")]
+        public int? GroupId { get; set; }
+
+       
+
+
     }
 
     public class ResetPasswordViewModel
