@@ -62,7 +62,7 @@ namespace LMS_Proj.Models
 
         public DbSet<Activity> Activities { get; set; }
 
- //       public System.Data.Entity.DbSet<LMS_Proj.Models.ApplicationUser> ApplicationUsers { get; set; }
+        public System.Data.Entity.DbSet<LMS_Proj.Models.Schedule> Schedules { get; set; }
 
 //        public System.Data.Entity.DbSet<LMS_Proj.Models.ApplicationUser> ApplicationUsers { get; set; }
 

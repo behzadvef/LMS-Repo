@@ -26,6 +26,8 @@ namespace LMS_Proj
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/LMS/css").Include(
+               "~/Content/LMS/global.min.css"));
         }
     }
 }

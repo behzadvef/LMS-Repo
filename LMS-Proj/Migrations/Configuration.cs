@@ -56,6 +56,30 @@ namespace LMS_Proj.Migrations
             context.SaveChanges();
 
 
+            context.Schedules.AddOrUpdate(
+                new Schedule {
+                
+                   Title="Start the project LMS-Lexicon",
+                   room="Gama &",
+                   StartTime = new DateTime(2015, 08, 10, 9, 0,0),
+                   EndTime = new DateTime(2015, 08, 11, 12,0,0),
+                   
+                },
+
+                    new Schedule {
+                
+                   Title="Continue working on the project LMS-Lexicon",
+                   room="Alpha",
+                   StartTime = new DateTime(2015, 08, 12, 9, 0,0),
+                   EndTime = new DateTime(2015, 08, 13, 12,0,0),
+                   
+                }
+
+                );
+            context.SaveChanges();
+
+
+
             if (!context.Users.Any(u => u.UserName == "DeletedUserHeir@admin.com"))
             {
                 var user = new ApplicationUser { UserName = "DeletedUserHeir@admin.com", Email = "DeletedUserHeir@admin.com" };

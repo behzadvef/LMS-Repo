@@ -41,5 +41,9 @@ namespace LMS_Proj.Models
 
         public  File Attachment { get; set; }
 
+        //FK Schedule
+        public int? scheduleId { get; set; }
+        public Schedule Timesheet { get; set; }
+
     }
 }
