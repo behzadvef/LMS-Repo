@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LMS_Proj.Models.Activity>
+﻿@*@model IEnumerable<LMS_Proj.Models.Activity>
 
 @{
     ViewBag.Title = "Index";
@@ -18,7 +18,7 @@
             @Html.DisplayNameFor(model => model.Groups.GroupName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Timesheet.room)
+            @Html.DisplayNameFor(model => model.TimeSheet.room)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Name)
@@ -44,7 +44,7 @@
             @Html.DisplayFor(modelItem => item.Groups.GroupName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Timesheet.room)
+            @Html.DisplayFor(modelItem => item.TimeSheet.room)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Name)
@@ -65,5 +65,96 @@
         </td>
     </tr>
 }
+
+</table>*@
+
+@model IEnumerable<LMS_Proj.Models.Activity>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<p>
+    @*@Html.ActionLink("Create New", "Create")*@
+
+    @using (Html.BeginForm())
+    {
+        @*<p>
+                Find by Group: @Html.TextBox("SearchString", ViewBag.FilterVaule as string)
+                <input type="submit" value="Search" />
+            </p>*@
+
+
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h3>Detailed Activity List</h3>
+            @Html.ActionLink("Create New", "Create")
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class=" form-group">
+
+                <div class="col-md-10">
+                    Search: @Html.DropDownList("GroupId", ViewData["GroupId"] as SelectList)  <input type="submit" value="Filter" class="btn btn-default" />
+
+                </div>
+            </div>
+
+        </div>
+
+
+    }
+
+
+</p>
+
+<table class="table table-striped table-hover table-responsive table-condensed">
+    <tr>
+        <th>
+            <h3 style="font-size:x-large"><span style="font-weight:bolder">@Html.DisplayNameFor(model => model.Attachment.FileName)</span></h3>
+        </th>
+        <th>
+            <h3 style="font-size:x-large"><span style="font-weight:bolder">@Html.DisplayNameFor(model => model.Groups.GroupName)</span></h3>
+        </th>
+        <th>
+            <h3 style="font-size:x-large"><span style="font-weight:bolder">@Html.DisplayNameFor(model => model.StartDate)</span></h3>
+        </th>
+        <th>
+            <h3 style="font-size:x-large"><span style="font-weight:bolder">@Html.DisplayNameFor(model => model.EndDate)</span></h3>
+        </th>
+        <th>
+            <h3 style="font-size:x-large"><span style="font-weight:bolder">@Html.DisplayNameFor(model => model.Description)</span></h3>
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="col-lg-2">
+                <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.Attachment.FileName)</span>
+            </td>
+            <td class="col-lg-2">
+                <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.Groups.GroupName)</span>
+            </td>
+            <td class="col-lg-1">
+                <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.StartDate)</span>
+            </td>
+            <td class="col-lg-1">
+                <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.EndDate)</span>
+            </td>
+            <td class="col-lg-1">
+                <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.Description)</span>
+            </td>
+            <td class="col-lg-4">
+                <button type="button" class="btn btn-warning col-lg-3" onclick="location.href='@Url.Action("Edit", "Activities", new { id = item.ActivityId })';return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-pencil"></span>Edit</button>
+
+                <button type="button" class="btn btn-info col-lg-4 col-lg-offset-1" onclick="location.href='@Url.Action("Details", "Activities", new { id = item.ActivityId })';return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-align-justify"></span>Details</button>
+
+                <button type="button" class="btn btn-danger col-lg-3 col-lg-offset-1" onclick="location.href='@Url.Action("Delete", "Activities", new { id = item.ActivityId })' ;return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-trash"></span>Delete</button>
+            </td>
+        </tr>
+    }
 
 </table>

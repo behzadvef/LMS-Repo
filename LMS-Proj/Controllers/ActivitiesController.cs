@@ -15,11 +15,68 @@ namespace LMS_Proj.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Activities
-        public ActionResult Index()
+        //public ActionResult Index()
+        //{
+        //    var activities = db.Activities.Include(a => a.Attachment).Include(a => a.Groups).Include(a => a.TimeSheet);
+        //    return View(activities.ToList());
+        //}
+
+        //// GET: Activities/Details/5
+        //public ActionResult Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Activity activity = db.Activities.Find(id);
+        //    if (activity == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(activity);
+
+        // GET: Activities
+        public ActionResult Index(string Name, int? GroupId, int? FileId)
         {
-            var activities = db.Activities.Include(a => a.Attachment).Include(a => a.Groups).Include(a => a.Timesheet);
-            return View(activities.ToList());
+
+            //var activities = db.Activities.Include(a => a.Attachment).Include(a => a.Groups).Include(a => a.Timesheet);
+            //return View(activities.ToList());
+            var activities = from s in db.Activities.Include(s => s.Attachment).Include(s => s.Groups)
+                             select s;
+
+
+            if (!String.IsNullOrEmpty(Name))
+            {
+                activities = activities.Where(s => s.Name.Contains(Name));
+                ViewBag.Title = Name;
+            }
+
+            if (GroupId != null && GroupId != 0)
+            {
+                activities = activities.Where(s => s.GroupId == GroupId);
+            }
+            var Groups = from gr in db.Groups
+                         select gr;
+            List<Group> group = new List<Group>();
+            Group groupType = new Group();
+            groupType.GroupID = 0;
+            groupType.GroupName = "All";
+            group.Add(groupType);
+
+            group.AddRange(Groups.ToList());
+            SelectList list;
+            list = new SelectList(group, "GroupId", "GroupName");
+
+
+            //ViewBag.GroupId = list
+            ViewData["GroupId"] = list;
+
+
+            return View(activities);
+
+
         }
+
 
         // GET: Activities/Details/5
         public ActionResult Details(int? id)
@@ -36,6 +93,7 @@ namespace LMS_Proj.Controllers
             return View(activity);
         }
 
+
         // GET: Activities/Create
         public ActionResult Create()
         {
@@ -44,6 +102,7 @@ namespace LMS_Proj.Controllers
             ViewBag.scheduleId = new SelectList(db.Schedules, "scheduleId", "room");
             return View();
         }
+
 
         // POST: Activities/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 

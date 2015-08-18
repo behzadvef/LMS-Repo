@@ -1,12 +1,11 @@
 ﻿@model LMS_Proj.Models.Activity
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Details";
 }
 
-<h2>Delete</h2>
+<h2>Details</h2>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>Activity</h4>
     <hr />
@@ -27,13 +26,13 @@
             @Html.DisplayFor(model => model.Groups.GroupName)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Timesheet.room)
-        </dt>
+        @*<dt>
+                @Html.DisplayNameFor(model => model.Timesheet.room)
+            </dt>*@
 
-        <dd>
-            @Html.DisplayFor(model => model.Timesheet.room)
-        </dd>
+        @*<dd>
+                @Html.DisplayFor(model => model.Timesheet.room)
+            </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.Name)
@@ -68,13 +67,9 @@
         </dd>
 
     </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
-    }
 </div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ActivityId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
