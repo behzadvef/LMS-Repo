@@ -23,6 +23,5 @@ namespace LMS_Proj.Models
         [ForeignKey("fileId")]
         public virtual File CurrentFile { get; set; }
   
-
     }
 }

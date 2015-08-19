@@ -11,11 +11,19 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Owner.Email)
+            @Html.DisplayNameFor(model => model.Owner.FirstName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Owner.Email)
+            @Html.DisplayFor(model => model.Owner.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Receiver.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Receiver.FirstName)
         </dd>
 
         <dt>
@@ -72,14 +80,6 @@
 
         <dd>
             @Html.DisplayFor(model => model.ReadByReciever)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.GroupId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.GroupId)
         </dd>
 
     </dl>

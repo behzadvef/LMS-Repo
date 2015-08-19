@@ -12,7 +12,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Owner.Email)
+            @Html.DisplayNameFor(model => model.Owner.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Receiver.FirstName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Type)
@@ -35,16 +38,16 @@
         <th>
             @Html.DisplayNameFor(model => model.ReadByReciever)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.GroupId)
-        </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Owner.Email)
+            @Html.DisplayFor(modelItem => item.Owner.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Receiver.FirstName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Type)
@@ -66,9 +69,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ReadByReciever)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GroupId)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.FileId }) |

@@ -7,10 +7,12 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LMS_Proj.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
 
-//Second Branch
 namespace LMS_Proj.Controllers
 {
+    [Authorize]
     public class FilesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -18,13 +20,14 @@ namespace LMS_Proj.Controllers
         // GET: Files
         public ActionResult Index()
         {
-            var files = db.Files.Include(f => f.Owner);
+            var files = db.Files.Include(f => f.Owner).Include(f => f.Receiver);
             return View(files.ToList());
         }
 
         // GET: Files/Details/5
         public ActionResult Details(int? id)
         {
+ 
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -34,13 +37,35 @@ namespace LMS_Proj.Controllers
             {
                 return HttpNotFound();
             }
+
+ //           var gr = file.Groups; //db.Files.Include(g => g.Groups);
+
             return View(file);
+        }
+
+
+        private SelectList AddFirstItem(SelectList list)
+        {
+            List<SelectListItem> _list = list.ToList();
+            _list.Insert(0, new SelectListItem() { Value = null, Text = "   " });
+            return new SelectList((IEnumerable<SelectListItem>)_list, "Value", "Text");
         }
 
         // GET: Files/Create
         public ActionResult Create()
         {
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email");
+
+            var store = new UserStore<ApplicationUser>(new ApplicationDbContext());
+            var userManager = new UserManager<ApplicationUser>(store);
+            ApplicationUser user = userManager.FindByNameAsync(User.Identity.Name).Result;
+
+            if (user == null)
+                return View();
+
+            ViewBag.OwnerId = new SelectList(db.Users.Where(u => u.Id == user.Id), "Id", "FirstName");
+            ViewBag.ReceiverId = new SelectList(db.Users, "Id", "FirstName");
+            ViewBag.GroupId = AddFirstItem(new SelectList(db.Groups, "GroupID", "GroupName"));
+
             return View();
         }
 
@@ -49,16 +74,20 @@ namespace LMS_Proj.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,ApplicationUserId,GroupId")] File file)
+        public ActionResult Create([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,ReceiverId,OwnerId, Groups ")] File file)
         {
             if (ModelState.IsValid)
             {
+                file.SubmissionDate = DateTime.Now;
                 db.Files.Add(file);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email", file.ApplicationUserId);
+
+            //ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", file.OwnerId);
+            //ViewBag.ReceiverId = new SelectList(db.Users, "Id", "FirstName", file.ReceiverId);
+            //ViewBag.GroupId = new SelectList(db.Groups, "GroupID", "GroupName", group.GroupID);
             return View(file);
         }
 
@@ -69,12 +98,16 @@ namespace LMS_Proj.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             File file = db.Files.Find(id);
             if (file == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email", file.ApplicationUserId);
+
+            ViewBag.OwnerId = new SelectList(db.Users.Where(u => u.Id == file.OwnerId), "Id", "FirstName", file.OwnerId);
+            ViewBag.ReceiverId = new SelectList(db.Users, "Id", "FirstName", file.ReceiverId);
+            ViewBag.GroupId = AddFirstItem(new SelectList(db.Groups, "GroupID", "GroupName"));
             return View(file);
         }
 
@@ -83,7 +116,7 @@ namespace LMS_Proj.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,ApplicationUserId,GroupId")] File file)
+        public ActionResult Edit([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,ReceiverId,OwnerId, Groups")] File file)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +124,8 @@ namespace LMS_Proj.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email", file.ApplicationUserId);
+            ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", file.OwnerId);
+            ViewBag.ReceiverId = new SelectList(db.Users, "Id", "FirstName", file.ReceiverId);
             return View(file);
         }
 
