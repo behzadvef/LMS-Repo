@@ -4399,3 +4399,11 @@ div.botbar p {
     bottom: 64px;
 }
 }
+
+h2{
+    display: block;
+//    font-size : 1.5em;
+    font-weight : bold;
+    text-align: center;
+    text-decoration: underline;
+}

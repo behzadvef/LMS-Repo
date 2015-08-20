@@ -27,7 +27,7 @@ namespace LMS_Proj.Controllers
         // GET: Files/Details/5
         public ActionResult Details(int? id)
         {
- 
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -38,7 +38,7 @@ namespace LMS_Proj.Controllers
                 return HttpNotFound();
             }
 
- //           var gr = file.Groups; //db.Files.Include(g => g.Groups);
+            //           var gr = file.Groups; //db.Files.Include(g => g.Groups);
 
             return View(file);
         }
@@ -63,7 +63,7 @@ namespace LMS_Proj.Controllers
                 return View();
 
             ViewBag.OwnerId = new SelectList(db.Users.Where(u => u.Id == user.Id), "Id", "FirstName");
-            ViewBag.ReceiverId = new SelectList(db.Users, "Id", "FirstName");
+            ViewBag.ReceiverId = AddFirstItem(new SelectList(db.Users, "Id", "FirstName"));
             ViewBag.GroupId = AddFirstItem(new SelectList(db.Groups, "GroupID", "GroupName"));
 
             return View();
@@ -141,6 +141,11 @@ namespace LMS_Proj.Controllers
             {
                 return HttpNotFound();
             }
+
+
+
+
+
             return View(file);
         }
 
@@ -149,9 +154,37 @@ namespace LMS_Proj.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+        //    var store = new UserStore<ApplicationUser>(new ApplicationDbContext());
+        //    var userManager = new UserManager<ApplicationUser>(store);
+        //    ApplicationUser user = userManager.FindByNameAsync(User.Identity.Name).Result;
+        //    User.Identity.GetUserId();
+
+        //    if (user == null)
+        //        return View();
+
+
+
             File file = db.Files.Find(id);
-            db.Files.Remove(file);
-            db.SaveChanges();
+
+            if (!(User.Identity.GetUserId() == file.OwnerId || User.IsInRole("admin")))
+            
+            {
+                // Error message 
+                return RedirectToAction("Index");
+            }
+
+            if (file != null)
+            {
+                var act = file.Activities;
+                foreach(Activity a in act)
+                {
+                    a.FileId = null;
+                }
+                db.SaveChanges();
+
+                db.Files.Remove(file);
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 

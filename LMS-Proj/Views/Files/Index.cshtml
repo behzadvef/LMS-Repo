@@ -4,18 +4,20 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>File List</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New File", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Owner.FirstName)
+            @*@Html.DisplayNameFor(model => model.Owner.FirstName)*@
+            Owner
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Receiver.FirstName)
+            @*@Html.DisplayNameFor(model => model.Receiver.FirstName)*@
+            Receiver
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Type)
@@ -29,9 +31,9 @@
         <th>
             @Html.DisplayNameFor(model => model.FilePath)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.FileLink)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.Comment)
         </th>
@@ -61,9 +63,9 @@
         <td>
             @Html.DisplayFor(modelItem => item.FilePath)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.FileLink)
-        </td>
+        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.Comment)
         </td>
