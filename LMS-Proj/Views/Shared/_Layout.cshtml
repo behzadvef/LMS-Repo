@@ -57,24 +57,44 @@
             </div>
         </div>
         <nav id="nav" role="navigation">
-            <ul class="bg-col8">
-                <li class="sub">
-                    @Html.ActionLink("Files", "Index", "Files")
-                </li>
-                <li class="sub">
-                    @Html.ActionLink("Group", "Index", "Groups")
-                </li>
-                <li class="sub">
-                    @Html.ActionLink("Activties", "Index", "Activities")
-                </li>
-                <li class="sub">
-                    @Html.ActionLink("Schedules", "Index", "Schedules")
-                </li>
-                <li class="sub">
-                    @Html.ActionLink("User List", "UserList", "Account")
-                </li>
-            </ul>
-        </nav>
+        <ul class="bg-col8">
+            <li class="btn btn-success fileinput-button">
+                @Html.ActionLink("Files", "Index", "Files")
+            </li>
+            <li class="btn btn-primary group">
+                @Html.ActionLink("Group", "Index", "Groups")
+            </li>
+            <li class="btn btn-warning active">
+                @Html.ActionLink("Activties", "Index", "Activities")
+            </li>
+            <li class="btn btn-danger schedule">
+                @Html.ActionLink("Schedules", "Index", "Schedules")
+            </li>
+            <li class="btn btn-default">
+                @Html.ActionLink("User List", "UserList", "Account")
+            </li>
+        </ul>
+    </nav>
+
+        @*<div class="row LexionLMS-buttonbar">
+            <div class="bg-col8">
+                <span class="btn btn-success fileinput-button">
+                    <span>@Html.ActionLink("Files", "Index", "Files")</span>
+                </span>
+                <button class="btn btn-primary group">
+                    <span>@Html.ActionLink("Group", "Index", "Groups")</span>
+                </button>
+                <button class="btn btn-warning active">
+                    <span>@Html.ActionLink("Activties", "Index", "Activities")</span>
+                </button>
+                <button class="btn btn-danger schedule">
+                    <span>@Html.ActionLink("Schedules", "Index", "Schedules")</span>
+                </button>
+                <button class="btn btn-block">
+                    <span>@Html.ActionLink("User List", "UserList", "Account")</span>
+                </button>
+            </div>
+        </div>*@
     </header>
 
 

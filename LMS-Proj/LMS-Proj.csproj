@@ -176,7 +176,7 @@
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\Group.cs" />
-    <Compile Include="Models\GroupsController.cs" />
+    <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Schedule.cs" />
@@ -217,6 +217,27 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.htmluploader.control.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.cs_localization.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.de_localization.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.en_localization.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.es_localization.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.fr_localization.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.he_localization.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.it_localization.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.ja_localization.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.ko_localization.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.min.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.nl_localization.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.no_localization.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.ru_localization.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.sv_localization.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.swf" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.tr_localization.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.zh_cn_localization.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\aurigma.imageuploaderflash.zh_tw_localization.js" />
+    <Content Include="Scripts\uploadFiles\Scripts\css\aurigma.htmluploader.control.css" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\favicon.ico" />
     <Content Include="Web.config">
@@ -228,7 +249,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
@@ -281,6 +304,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Documents\Files\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -293,6 +317,9 @@
     <EmbeddedResource Include="Migrations\201508121208101_addName.resx">
       <DependentUpon>201508121208101_addName.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

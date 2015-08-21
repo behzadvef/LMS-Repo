@@ -1,7 +1,7 @@
 ﻿@model LMS_Proj.Models.Activity
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Delete";
 }
 
 <h2>Details</h2>
@@ -25,6 +25,15 @@
         <dd>
             @Html.DisplayFor(model => model.Groups.GroupName)
         </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Groups.GroupDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Groups.GroupDescription)
+        </dd>
+
 
         @*<dt>
                 @Html.DisplayNameFor(model => model.Timesheet.room)
@@ -67,9 +76,15 @@
         </dd>
 
     </dl>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ActivityId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
 

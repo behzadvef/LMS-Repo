@@ -113,6 +113,25 @@ namespace LMS_Proj.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                //if (upload != null && upload.ContentLength > 0)
+                //{
+                //    var avatar = new File
+                //    {
+                //        FileName = System.IO.Path.GetFileName(upload.FileName),
+                //        Type = FileType.uploadFile,
+                //        FilePath = upload.F
+
+                //    };
+                //    using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                //    {
+                //        avatar.Content = reader.ReadBytes(upload.ContentLength);
+                //    }
+                //    Activity.Files = new List<File> { avatar };
+                //}
+
+
+
                 db.Activities.Add(activity);
                 db.SaveChanges();
                 return RedirectToAction("Index");

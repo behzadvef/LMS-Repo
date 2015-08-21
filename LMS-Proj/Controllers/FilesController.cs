@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LMS_Proj.Models;
+//using System.IO;
+//using System.IO;
 
 //Second Branch
 namespace LMS_Proj.Controllers
@@ -18,6 +20,7 @@ namespace LMS_Proj.Controllers
         // GET: Files
         public ActionResult Index()
         {
+           
             var files = db.Files.Include(f => f.Owner);
             return View(files.ToList());
         }
@@ -49,10 +52,42 @@ namespace LMS_Proj.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,ApplicationUserId,GroupId")] File file)
+        public ActionResult Create([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,uploadFile,ApplicationUserId,GroupId")] File file,IEnumerable<HttpPostedFileBase> uploadfiles)
         {
             if (ModelState.IsValid)
             {
+                //try
+                //{
+                //    foreach (HttpPostedFileBase Upload in uploadfiles)
+                //    {
+                //        string filename = System.IO.Path.GetFileName(file.FileName);
+                //        Upload.SaveAs(Server.MapPath("~/Documents/Files/" + filename));
+                //        string filepathtosave = "/Documents/Files/" + filename;
+                //    }
+                //    ViewBag.Message = "File Uploaded successfully.";
+
+                //}
+                //catch
+                //{
+                //    ViewBag.Message = "Error While uploading the files.";
+                //}
+
+                foreach(var Upload in uploadfiles)
+                {
+                    var allowedExtensions = new[] { ".doc", ".xlsx", ".txt", ".jpeg" };
+                    var extension = System.IO.Path.GetExtension(file.FileName);
+                    if (!allowedExtensions.Contains(extension))
+                    {
+                        // Not allowed
+                    }
+                  // if(Upload.ContentLength > 0)
+                   //{
+                       var fileName = System.IO.Path.GetFileName(file.FileName);
+                       var path = System.IO.Path.Combine(Server.MapPath("~/Documents/Files/"), fileName);
+                       Upload.SaveAs(path);
+                  // }
+                }
+
                 db.Files.Add(file);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -83,7 +118,7 @@ namespace LMS_Proj.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,ApplicationUserId,GroupId")] File file)
+        public ActionResult Edit([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,uploadFile,ApplicationUserId,GroupId")] File file )
         {
             if (ModelState.IsValid)
             {
@@ -120,6 +155,53 @@ namespace LMS_Proj.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+
+        //[HttpPost]
+        //public ActionResult UploadFile(string uploadFiles, HttpPostedFileBase file)
+        //{
+        //    //string path = @"C:\Users\User\Documents\Visual Studio 2013\Projects\LMS-Proj\LMS-Proj-Group\LMS-Proj\Documents\Files" + uploadFiles;
+        //    //if (file != null)
+        //    //    file.SaveAs(path);
+        //    //return RedirectToAction("Index");
+
+        //}
+
+        [HttpPost, ActionName("DeleteFile")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteFile(string filepdfName)
+        {
+            var fileName = "";
+                fileName = filepdfName;
+                string fullPath = Request.MapPath("~/Documents/Files/"
+                + fileName);
+ 
+                if (System.IO.File.Exists(fullPath))
+                {
+                    System.IO.File.Delete(fullPath);
+                    //Session["DeleteSuccess"] = "Yes";
+                }
+                return RedirectToAction("Index");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         protected override void Dispose(bool disposing)
         {

@@ -23,7 +23,7 @@ namespace LMS_Proj.Models
         [Display(Name = "Location")]
         public string ClassLocation { get; set; }
 
-        [Display(Name = "Description")]
+        [Display(Name = "GroupDescription")]
         public string GroupDescription { get; set; }
 
 

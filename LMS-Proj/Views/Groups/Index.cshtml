@@ -90,7 +90,7 @@
         @Html.ActionLink("Create New", "Create")
         <hr />
         <div>
-            <text>Search : </text><input type="text" name="GroupName" />&nbsp;
+            <text>Group Name : </text><input type="text" name="GroupName" />&nbsp;
             <input type="submit" value="Search" id="btnSubmit" />
         </div>
 
@@ -134,7 +134,7 @@
             <td class="col-lg-3">
                 <button type="button" class="btn btn-warning col-lg-3" onclick="location.href='@Url.Action("Edit", "Groups", new { id = item.GroupID })';return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-pencil"></span>Edit</button>
 
-                <button type="button" class="btn btn-info col-lg-3 col-lg-offset-1" onclick="location.href='@Url.Action("Details", "Groups", new { id = item.GroupID})';return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-align-justify"></span>Details</button>
+                <button type="button" class="btn btn-info col-lg-4 col-lg-offset-1" onclick="location.href='@Url.Action("Details", "Groups", new { id = item.GroupID})';return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-align-justify"></span>Details</button>
 
                 <button type="button" class="btn btn-danger col-lg-3 col-lg-offset-1" onclick="location.href='@Url.Action("Delete", "Groups", new { id = item.GroupID })' ;return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-trash"></span>Delete</button>
             </td>
