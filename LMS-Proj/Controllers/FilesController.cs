@@ -60,7 +60,7 @@ namespace LMS_Proj.Controllers
             ApplicationUser user = userManager.FindByNameAsync(User.Identity.Name).Result;
 
             if (user == null)
-                return View();
+            return View();
 
             ViewBag.OwnerId = new SelectList(db.Users.Where(u => u.Id == user.Id), "Id", "FirstName");
             ViewBag.ReceiverId = AddFirstItem(new SelectList(db.Users, "Id", "FirstName"));
@@ -182,11 +182,58 @@ namespace LMS_Proj.Controllers
                 }
                 db.SaveChanges();
 
-                db.Files.Remove(file);
-                db.SaveChanges();
+            db.Files.Remove(file);
+            db.SaveChanges();
             }
             return RedirectToAction("Index");
         }
+
+
+        //[HttpPost]
+        //public ActionResult UploadFile(string uploadFiles, HttpPostedFileBase file)
+        //{
+        //    //string path = @"C:\Users\User\Documents\Visual Studio 2013\Projects\LMS-Proj\LMS-Proj-Group\LMS-Proj\Documents\Files" + uploadFiles;
+        //    //if (file != null)
+        //    //    file.SaveAs(path);
+        //    //return RedirectToAction("Index");
+
+        //}
+
+        [HttpPost, ActionName("DeleteFile")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteFile(string filepdfName)
+        {
+            var fileName = "";
+                fileName = filepdfName;
+                string fullPath = Request.MapPath("~/Documents/Files/"
+                + fileName);
+ 
+                if (System.IO.File.Exists(fullPath))
+                {
+                    System.IO.File.Delete(fullPath);
+                    //Session["DeleteSuccess"] = "Yes";
+                }
+                return RedirectToAction("Index");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         protected override void Dispose(bool disposing)
         {

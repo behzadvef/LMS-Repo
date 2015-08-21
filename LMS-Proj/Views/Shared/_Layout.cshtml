@@ -11,70 +11,90 @@
 </head>
 <body>
     @*<div class="navbar navbar-inverse navbar-fixed-top">*@
-    @*<div class="container">*@
-    @*<div class="navbar-header">
-        @*<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>*@
-    @*@Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" }*@)
-    @*<a href="@Url.Action("Index", "Home", new { area = "" })" class="navbar-brand">
-            <img src="~/Images/logo-lexicon@2x.gif" style="width: auto; height:80px; margin:30px 1px 30px 1px;" />
+        @*<div class="container">*@
+            @*<div class="navbar-header">
+                @*<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>*@
+    @*@Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" }*@
+                @*<a href="@Url.Action("Index", "Home", new { area = "" })" class="navbar-brand">
+                    <img src="~/Images/logo-lexicon@2x.gif" style="width: auto; height:80px; margin:30px 1px 30px 1px;" />
 
-        </a>*@
-    @*</div>*@
-    <div class="navbar-collapse collapse">
+                </a>*@
+            @*</div>*@
+            <div class="navbar-collapse collapse">
         @*<ul class="nav navbar-nav">
-            <li class="text-center">
-                <a href="@Url.Action("Index", "Home")">
-                    <span class="glyphicon glyphicon-home"></span>
-                    Home
-                </a>
-            </li>
-            <li class="text-center">
-                <a href="@Url.Action("About", "Home")">
-                    <span class="glyphicon glyphicon-info-sign"></span>
-                    About
-                </a>
-            </li>
-            <li class="text-center">
-                <a href="@Url.Action("Contact", "Home")">
-                    <span class="glyphicon glyphicon-envelope"></span>
-                    Contact
-                </a>
-            </li>
-
+                    <li class="text-center">
+                        <a href="@Url.Action("Index", "Home")">
+                            <span class="glyphicon glyphicon-home"></span>
+                            Home
+                        </a>
+                    </li>
+                    <li class="text-center">
+                        <a href="@Url.Action("About", "Home")">
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                            About
+                        </a>
+                    </li>
+                    <li class="text-center">
+                        <a href="@Url.Action("Contact", "Home")">
+                            <span class="glyphicon glyphicon-envelope"></span>
+                            Contact
+                        </a>
+                    </li>
+  
         </ul>*@
-        @Html.Partial("_LoginPartial")
+            @Html.Partial("_LoginPartial")
     </div>
 
-    <header class="group" role="banner">
-        <div class="topbar">
-            <div class="group">
-                <h1><img alt="" src="~/Images/logo-lexicon@2x.gif" width="232" height="80" alt="Lexicon Home" /></h1>
+        <header class="group" role="banner">
+            <div class="topbar">
+                <div class="group">
+                <h1><img alt="" src="~/Images/logo-lexicon@2x.gif" width="232" height="80" /></h1>
+                </div>
             </div>
-        </div>
-        <nav id="nav" role="navigation">
-            <ul class="bg-col8">
-                <li class="sub subopen current">
-                    @Html.ActionLink("Files", "Index", "Files")
-                </li>
-                <li class="sub">
-                    @Html.ActionLink("Group", "Index", "Groups")
-                </li>
-                <li class="sub">
+            <nav id="nav" role="navigation">
+                <ul class="bg-col8">
+            <li class="btn btn-success fileinput-button">
+                      @Html.ActionLink("Files", "Index", "Files")
+                    </li>
+            <li class="btn btn-primary group">
+                        @Html.ActionLink("Group", "Index", "Groups")
+                    </li>
+            <li class="btn btn-warning active">
                     @Html.ActionLink("Activties", "Index", "Activities")
-                </li>
-                <li class="sub">
+                    </li>
+            <li class="btn btn-danger schedule">
                     @Html.ActionLink("Schedules", "Index", "Schedules")
-                </li>
-                <li class="sub">
+                    </li>
+            <li class="btn btn-default">
                     @Html.ActionLink("User List", "UserList", "Account")
-                </li>
-            </ul>
-        </nav>
-    </header>
+                    </li>
+                </ul>
+            </nav>
+
+        @*<div class="row LexionLMS-buttonbar">
+            <div class="bg-col8">
+                <span class="btn btn-success fileinput-button">
+                    <span>@Html.ActionLink("Files", "Index", "Files")</span>
+                </span>
+                <button class="btn btn-primary group">
+                    <span>@Html.ActionLink("Group", "Index", "Groups")</span>
+                </button>
+                <button class="btn btn-warning active">
+                    <span>@Html.ActionLink("Activties", "Index", "Activities")</span>
+                </button>
+                <button class="btn btn-danger schedule">
+                    <span>@Html.ActionLink("Schedules", "Index", "Schedules")</span>
+                </button>
+                <button class="btn btn-block">
+                    <span>@Html.ActionLink("User List", "UserList", "Account")</span>
+                </button>
+            </div>
+        </div>*@
+        </header>
 
 
 
@@ -82,7 +102,7 @@
 
 
 
-    @*@Html.Partial("_LoginPartial")
+        @*@Html.Partial("_LoginPartial")
             </div>
         </div>*@
     @*</div>*@

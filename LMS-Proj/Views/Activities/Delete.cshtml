@@ -6,7 +6,6 @@
 
 <h2>Activity Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
     <h4></h4>
     <hr />
@@ -28,12 +27,21 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Timesheet.room)
+            @Html.DisplayNameFor(model => model.Groups.GroupDescription)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Timesheet.room)
+            @Html.DisplayFor(model => model.Groups.GroupDescription)
         </dd>
+
+
+        @*<dt>
+                @Html.DisplayNameFor(model => model.Timesheet.room)
+            </dt>*@
+
+        @*<dd>
+            @Html.DisplayFor(model => model.Timesheet.room)
+            </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.Name)
@@ -68,8 +76,8 @@
         </dd>
 
     </dl>
-
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
@@ -78,3 +86,5 @@
         </div>
     }
 </div>
+
+

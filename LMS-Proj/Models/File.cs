@@ -40,6 +40,14 @@ namespace LMS_Proj.Models
         [Display(Name = "Read")]
         public bool ReadByReciever { get; set; }
 
+      
+        //public string uploadFile
+        //{
+        //    get { return FilePath.Replace(" ", string.Empty) + ".pdf"; }
+        //}
+
+
+
         // Connection
 
         //       [ForeignKey("ApplicationUser")]

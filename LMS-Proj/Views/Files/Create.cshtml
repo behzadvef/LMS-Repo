@@ -6,14 +6,14 @@
 }
 
 
-@*var allgroups = @Html.Raw(Json.Encode(ViewBag.GroupId));*@
+@*@using (Html.BeginForm())*@ 
+@using (Html.BeginForm("Create", "Files", FormMethod.Post, new { enctype = "multipart/form-data" }))
 
-<h2>Create New File</h2>
+  
 
-@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
+    
     <div class="form-horizontal">
         <h4>File</h4>
         <hr />
@@ -100,14 +100,37 @@
             </div>
         </div>
 
+
+        @*<div class="form-group">
+            @Html.Label("File", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" name="uploadfiles" value="" multiple="multiple" />
+               
+  
+                <input type="submit" value="Upload You File" title="Uplad" />
+                <div style="color:Red;font-size:14px">@ViewBag.Message</div>
+                </div>
+            </div>*@
+
+
+
         <div class="form-group">
+                    @Html.Label("File", new { @class = "control-label col-md-2" })
             <div class="col-md-offset-2 col-md-10">
+                        <input type="file" name="uploadfiles" value="" multiple="multiple" />
+
                 <input type="submit" value="Create" class="btn btn-default" />
+                        <div style="color:Red;font-size:14px">@ViewBag.Message</div>
             </div>
         </div>
+
     </div>
 }
+
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

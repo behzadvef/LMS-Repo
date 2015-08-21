@@ -43,7 +43,8 @@ namespace LMS_Proj.Models
 
         //FK Schedule
         public int? scheduleId { get; set; }
-        public Schedule Timesheet { get; set; }
+        public Schedule TimeSheet { get; set; }
+        //public Schedule room { get; set; }
 
     }
 }
