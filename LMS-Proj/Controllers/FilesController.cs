@@ -60,7 +60,7 @@ namespace LMS_Proj.Controllers
             ApplicationUser user = userManager.FindByNameAsync(User.Identity.Name).Result;
 
             if (user == null)
-            return View();
+                return View();
 
             ViewBag.OwnerId = new SelectList(db.Users.Where(u => u.Id == user.Id), "Id", "FirstName");
             ViewBag.ReceiverId = AddFirstItem(new SelectList(db.Users, "Id", "FirstName"));
@@ -74,10 +74,71 @@ namespace LMS_Proj.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,ReceiverId,OwnerId, Groups ")] File file)
+        public ActionResult Create([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,ReceiverId,OwnerId, Groups ")] File file, HttpPostedFileBase uploadfiles)
         {
             if (ModelState.IsValid)
             {
+                if (uploadfiles != null && uploadfiles.ContentLength > 0)
+                {
+                    var uploadFile = new System.IO.BinaryWriter(System.IO.File.Open(Server.MapPath("/Documents/Files/") + uploadfiles.FileName, System.IO.FileMode.Create));
+                    using (var reader = new System.IO.BinaryReader(uploadfiles.InputStream))
+                    {
+                        uploadFile.Write(reader.ReadBytes(uploadfiles.ContentLength));
+                    }
+                }
+                //try
+                //{
+                //    foreach (HttpPostedFileBase Upload in uploadfiles)
+                //    {
+                //        string filename = System.IO.Path.GetFileName(file.FileName);
+                //        Upload.SaveAs(Server.MapPath("~/Documents/Files/" + filename));
+                //        string filepathtosave = "/Documents/Files/" + filename;
+                //    }
+                //    ViewBag.Message = "File Uploaded successfully.";
+
+                //}
+                //catch
+                //{
+                //    ViewBag.Message = "Error While uploading the files.";
+                //}
+
+               // foreach (var Upload in uploadfiles)
+              //  {
+                    //var allowedExtensions = new[] { ".doc", ".xlsx", ".txt", ".jpeg" };
+                    //var extension = System.IO.Path.GetExtension(file.FileName);
+                    //if (!allowedExtensions.Contains(extension))
+                    //{
+                    //    // Not allowed
+                    //}
+                    // if(uploadfiles.ContentLength > 0)
+                    //{
+                    //var fileName = System.IO.Path.GetFileName(file.FileName);
+                    //var path = System.IO.Path.Combine(Server.MapPath("~/Documents/Files"), fileName);
+                    //uploadfiles.SaveAs(path);
+                    // }
+              //  }
+                //if (Request.Files != null)
+                //{
+                //    foreach (string requestFile in Request.Files)
+                //    {
+                //  uploadfiles = Request.Files[requestFile];
+                //        if (uploadfiles.ContentLength > 0)
+                //        {
+                //            string fileName = System.IO.Path.GetFileName(file.FileName);
+                //            string directory = Server.MapPath("~/Documents/Files/");
+                //            if (!System.IO.Directory.Exists(directory))
+                //            {
+                //                System.IO.Directory.CreateDirectory(directory);
+                //            }
+                //            string path = System.IO.Path.Combine(directory, fileName);
+                //            uploadfiles.SaveAs(path);
+                //        }
+                //    }
+                //}
+
+                var tempUserId = User.Identity.GetUserId();
+                var tempUser = db.Users.Where(u => u.Id == tempUserId).First();
+                file.Owner= tempUser;
                 file.SubmissionDate = DateTime.Now;
                 db.Files.Add(file);
                 db.SaveChanges();
@@ -116,7 +177,7 @@ namespace LMS_Proj.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,ReceiverId,OwnerId, Groups")] File file)
+        public ActionResult Edit([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,ReceiverId,OwnerId, Groups")] File file )
         {
             if (ModelState.IsValid)
             {
@@ -154,20 +215,19 @@ namespace LMS_Proj.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-        //    var store = new UserStore<ApplicationUser>(new ApplicationDbContext());
-        //    var userManager = new UserManager<ApplicationUser>(store);
-        //    ApplicationUser user = userManager.FindByNameAsync(User.Identity.Name).Result;
-        //    User.Identity.GetUserId();
+            //    var store = new UserStore<ApplicationUser>(new ApplicationDbContext());
+            //    var userManager = new UserManager<ApplicationUser>(store);
+            //    ApplicationUser user = userManager.FindByNameAsync(User.Identity.Name).Result;
+            //    User.Identity.GetUserId();
 
-        //    if (user == null)
-        //        return View();
+            //    if (user == null)
+            //        return View();
 
 
 
             File file = db.Files.Find(id);
 
             if (!(User.Identity.GetUserId() == file.OwnerId || User.IsInRole("admin")))
-            
             {
                 // Error message 
                 return RedirectToAction("Index");
@@ -176,14 +236,14 @@ namespace LMS_Proj.Controllers
             if (file != null)
             {
                 var act = file.Activities;
-                foreach(Activity a in act)
+                foreach (Activity a in act)
                 {
                     a.FileId = null;
                 }
                 db.SaveChanges();
 
-            db.Files.Remove(file);
-            db.SaveChanges();
+                db.Files.Remove(file);
+                db.SaveChanges();
             }
             return RedirectToAction("Index");
         }
@@ -199,22 +259,22 @@ namespace LMS_Proj.Controllers
 
         //}
 
-        [HttpPost, ActionName("DeleteFile")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteFile(string filepdfName)
-        {
-            var fileName = "";
-                fileName = filepdfName;
-                string fullPath = Request.MapPath("~/Documents/Files/"
-                + fileName);
- 
-                if (System.IO.File.Exists(fullPath))
-                {
-                    System.IO.File.Delete(fullPath);
-                    //Session["DeleteSuccess"] = "Yes";
-                }
-                return RedirectToAction("Index");
-        }
+        //[HttpPost, ActionName("DeleteFile")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteFile(string filepdfName)
+        //{
+        //    var fileName = "";
+        //    fileName = filepdfName;
+        //    string fullPath = Request.MapPath("~/Documents/Files/"
+        //    + fileName);
+
+        //    if (System.IO.File.Exists(fullPath))
+        //    {
+        //        System.IO.File.Delete(fullPath);
+        //        //Session["DeleteSuccess"] = "Yes";
+        //    }
+        //    return RedirectToAction("Index");
+        //}
 
 
 

@@ -115,13 +115,19 @@
 
 
         <div class="form-group">
-                    @Html.Label("File", new { @class = "control-label col-md-2" })
-            <div class="col-md-offset-2 col-md-10">
-                        <input type="file" name="uploadfiles" value="" multiple="multiple" />
+           
+                @Html.Label("File", new { @class = "control-label col-md-2" })
+    
+                <div class="col-md-offset-2 col-md-10">
+                    <span class="btn btn-success">
+                        <input type="file" name="uploadfiles" value="" multiple="multiple" id="uploadfiles" />
+                    </span>
 
-                <input type="submit" value="Create" class="btn btn-default" />
+                        @*<input type="submit" value="Upload You File" title="Uplad" />*@
+
+                        <input type="submit" value="Create" class="btn btn-default" />
                         <div style="color:Red;font-size:14px">@ViewBag.Message</div>
-            </div>
+</div>
         </div>
 
     </div>
