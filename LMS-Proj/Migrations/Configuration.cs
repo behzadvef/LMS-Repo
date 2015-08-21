@@ -1,6 +1,6 @@
 namespace LMS_Proj.Migrations
 {
-    using System;    
+    using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
@@ -57,23 +57,25 @@ namespace LMS_Proj.Migrations
 
 
             context.Schedules.AddOrUpdate(
-                new Schedule {
-                
-                   Title="Start the project LMS-Lexicon",
-                   room="Gama &",
-                   StartTime = new DateTime(2015, 08, 10, 9, 0,0),
-                   EndTime = new DateTime(2015, 08, 11, 12,0,0),
-                   
+                new Schedule
+                {
+
+                    Title = "Start the project LMS-Lexicon",
+                    room = "Gama &",
+                    StartTime = new DateTime(2015, 08, 10, 9, 0, 0),
+                    EndTime = new DateTime(2015, 08, 11, 12, 0, 0),
+
                 },
 
-                    new Schedule {
-                
-                   Title="Continue working on the project LMS-Lexicon",
-                   room="Alpha",
-                   StartTime = new DateTime(2015, 08, 12, 9, 0,0),
-                   EndTime = new DateTime(2015, 08, 13, 12,0,0),
-                   
-                }
+                    new Schedule
+                    {
+
+                        Title = "Continue working on the project LMS-Lexicon",
+                        room = "Alpha",
+                        StartTime = new DateTime(2015, 08, 12, 9, 0, 0),
+                        EndTime = new DateTime(2015, 08, 13, 12, 0, 0),
+
+                    }
 
                 );
             context.SaveChanges();
@@ -110,15 +112,15 @@ namespace LMS_Proj.Migrations
 
 
             context.Files.AddOrUpdate(
-                new File { GroupId = 2, Type = FileType.Lesson, SubmissionDate = new DateTime(2015, 5, 26, 9, 0, 0), FileName = "Lesson1", FilePath = "C:\\LMS-Files", FileLink ="http:/lexicon.se/lesson1", Comment = "" },
+                new File { Type = FileType.Lesson, SubmissionDate = new DateTime(2015, 5, 26, 9, 0, 0), FileName = "Lesson1", FilePath = "C:\\LMS-Files", FileLink = "http:/lexicon.se/lesson1", Comment = "" },
                 new File { Receiver = context.Users.First(), Type = FileType.Exercise, SubmissionDate = new DateTime(2015, 5, 26, 9, 0, 0), FileName = "Exercise1", FilePath = "C:\\LMS-Files", FileLink = "", Comment = "Behzads Exercise 1" },
-                new File { Type = FileType.Comment, SubmissionDate = new DateTime(2015, 5, 26, 9, 0, 0), FileName = "Lesson1", FilePath = "C:\\LMS-Files", FileLink ="", Comment = "OK" },
-                new File {GroupId = 1, Type = FileType.SharedFile, SubmissionDate = new DateTime(2015, 5, 26, 9, 0, 0), FileName = "SharedFile1", FilePath = "C:\\LMS-Files", FileLink ="", Comment = "" }
+                new File { Type = FileType.Comment, SubmissionDate = new DateTime(2015, 5, 26, 9, 0, 0), FileName = "Lesson1", FilePath = "C:\\LMS-Files", FileLink = "", Comment = "OK" },
+                new File { Type = FileType.SharedFile, SubmissionDate = new DateTime(2015, 5, 26, 9, 0, 0), FileName = "SharedFile1", FilePath = "C:\\LMS-Files", FileLink = "", Comment = "" }
              );
             context.SaveChanges(); //Saves the buffers to database
 
 
- 
+
         }
     }
 }

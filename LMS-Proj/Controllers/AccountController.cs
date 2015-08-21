@@ -12,6 +12,7 @@ using LMS_Proj.Models;
 using System.Collections.Generic;
 using System.Net;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity;
 
 namespace LMS_Proj.Controllers
 {
@@ -215,8 +216,8 @@ namespace LMS_Proj.Controllers
 
                 foreach( File file in db.Files)
                 {
-                    if (file.ApplicationUserId == id)
-                        file.ApplicationUserId = DeletedFilesHeirId;
+                    if (file.OwnerId == id)
+                        file.OwnerId = DeletedFilesHeirId;
                 }
                 db.SaveChanges();
                 await UserManager.DeleteAsync(user);
@@ -229,10 +230,58 @@ namespace LMS_Proj.Controllers
             }
         }
 
+        // GET: Account/Edit/5
+        public ActionResult Edit(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUser  user = db.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+           
+            ViewBag.GroupId = new SelectList(db.Groups, "GroupID", "GroupName", user.GroupId);
+            return View(user);
+        }
+
+        // POST: Account/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id, FirstName, LastName, Email, UserName, GroupId")] ApplicationUser  user)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("UserList");
+            }          
+            ViewBag.GroupId = new SelectList(db.Groups, "GroupID", "GroupName", user.GroupId);
+            return View(user);
+        }
 
 
 
 
+        // GET: Account/Details/5
+        public ActionResult Details(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            ApplicationUser user = db.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
+        }
 
 
 

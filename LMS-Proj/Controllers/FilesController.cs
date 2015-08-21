@@ -7,12 +7,12 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LMS_Proj.Models;
-//using System.IO;
-//using System.IO;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
 
-//Second Branch
 namespace LMS_Proj.Controllers
 {
+    [Authorize]
     public class FilesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -20,14 +20,14 @@ namespace LMS_Proj.Controllers
         // GET: Files
         public ActionResult Index()
         {
-           
-            var files = db.Files.Include(f => f.Owner);
+            var files = db.Files.Include(f => f.Owner).Include(f => f.Receiver);
             return View(files.ToList());
         }
 
         // GET: Files/Details/5
         public ActionResult Details(int? id)
         {
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -37,13 +37,35 @@ namespace LMS_Proj.Controllers
             {
                 return HttpNotFound();
             }
+
+            //           var gr = file.Groups; //db.Files.Include(g => g.Groups);
+
             return View(file);
+        }
+
+
+        private SelectList AddFirstItem(SelectList list)
+        {
+            List<SelectListItem> _list = list.ToList();
+            _list.Insert(0, new SelectListItem() { Value = null, Text = "   " });
+            return new SelectList((IEnumerable<SelectListItem>)_list, "Value", "Text");
         }
 
         // GET: Files/Create
         public ActionResult Create()
         {
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email");
+
+            var store = new UserStore<ApplicationUser>(new ApplicationDbContext());
+            var userManager = new UserManager<ApplicationUser>(store);
+            ApplicationUser user = userManager.FindByNameAsync(User.Identity.Name).Result;
+
+            if (user == null)
+            return View();
+
+            ViewBag.OwnerId = new SelectList(db.Users.Where(u => u.Id == user.Id), "Id", "FirstName");
+            ViewBag.ReceiverId = AddFirstItem(new SelectList(db.Users, "Id", "FirstName"));
+            ViewBag.GroupId = AddFirstItem(new SelectList(db.Groups, "GroupID", "GroupName"));
+
             return View();
         }
 
@@ -52,48 +74,20 @@ namespace LMS_Proj.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,uploadFile,ApplicationUserId,GroupId")] File file,IEnumerable<HttpPostedFileBase> uploadfiles)
+        public ActionResult Create([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,ReceiverId,OwnerId, Groups ")] File file)
         {
             if (ModelState.IsValid)
             {
-                //try
-                //{
-                //    foreach (HttpPostedFileBase Upload in uploadfiles)
-                //    {
-                //        string filename = System.IO.Path.GetFileName(file.FileName);
-                //        Upload.SaveAs(Server.MapPath("~/Documents/Files/" + filename));
-                //        string filepathtosave = "/Documents/Files/" + filename;
-                //    }
-                //    ViewBag.Message = "File Uploaded successfully.";
-
-                //}
-                //catch
-                //{
-                //    ViewBag.Message = "Error While uploading the files.";
-                //}
-
-                foreach(var Upload in uploadfiles)
-                {
-                    var allowedExtensions = new[] { ".doc", ".xlsx", ".txt", ".jpeg" };
-                    var extension = System.IO.Path.GetExtension(file.FileName);
-                    if (!allowedExtensions.Contains(extension))
-                    {
-                        // Not allowed
-                    }
-                  // if(Upload.ContentLength > 0)
-                   //{
-                       var fileName = System.IO.Path.GetFileName(file.FileName);
-                       var path = System.IO.Path.Combine(Server.MapPath("~/Documents/Files/"), fileName);
-                       Upload.SaveAs(path);
-                  // }
-                }
-
+                file.SubmissionDate = DateTime.Now;
                 db.Files.Add(file);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email", file.ApplicationUserId);
+
+            //ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", file.OwnerId);
+            //ViewBag.ReceiverId = new SelectList(db.Users, "Id", "FirstName", file.ReceiverId);
+            //ViewBag.GroupId = new SelectList(db.Groups, "GroupID", "GroupName", group.GroupID);
             return View(file);
         }
 
@@ -104,12 +98,16 @@ namespace LMS_Proj.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             File file = db.Files.Find(id);
             if (file == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email", file.ApplicationUserId);
+
+            ViewBag.OwnerId = new SelectList(db.Users.Where(u => u.Id == file.OwnerId), "Id", "FirstName", file.OwnerId);
+            ViewBag.ReceiverId = new SelectList(db.Users, "Id", "FirstName", file.ReceiverId);
+            ViewBag.GroupId = AddFirstItem(new SelectList(db.Groups, "GroupID", "GroupName"));
             return View(file);
         }
 
@@ -118,7 +116,7 @@ namespace LMS_Proj.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,uploadFile,ApplicationUserId,GroupId")] File file )
+        public ActionResult Edit([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,ReceiverId,OwnerId, Groups")] File file)
         {
             if (ModelState.IsValid)
             {
@@ -126,7 +124,8 @@ namespace LMS_Proj.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email", file.ApplicationUserId);
+            ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", file.OwnerId);
+            ViewBag.ReceiverId = new SelectList(db.Users, "Id", "FirstName", file.ReceiverId);
             return View(file);
         }
 
@@ -142,6 +141,11 @@ namespace LMS_Proj.Controllers
             {
                 return HttpNotFound();
             }
+
+
+
+
+
             return View(file);
         }
 
@@ -150,9 +154,37 @@ namespace LMS_Proj.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+        //    var store = new UserStore<ApplicationUser>(new ApplicationDbContext());
+        //    var userManager = new UserManager<ApplicationUser>(store);
+        //    ApplicationUser user = userManager.FindByNameAsync(User.Identity.Name).Result;
+        //    User.Identity.GetUserId();
+
+        //    if (user == null)
+        //        return View();
+
+
+
             File file = db.Files.Find(id);
+
+            if (!(User.Identity.GetUserId() == file.OwnerId || User.IsInRole("admin")))
+            
+            {
+                // Error message 
+                return RedirectToAction("Index");
+            }
+
+            if (file != null)
+            {
+                var act = file.Activities;
+                foreach(Activity a in act)
+                {
+                    a.FileId = null;
+                }
+                db.SaveChanges();
+
             db.Files.Remove(file);
             db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 

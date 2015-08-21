@@ -4,15 +4,20 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>File List</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New File", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Owner.Email)
+            @*@Html.DisplayNameFor(model => model.Owner.FirstName)*@
+            Owner
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Receiver.FirstName)*@
+            Receiver
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Type)
@@ -26,17 +31,14 @@
         <th>
             @Html.DisplayNameFor(model => model.FilePath)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.FileLink)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.Comment)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ReadByReciever)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.GroupId)
         </th>
         <th></th>
     </tr>
@@ -44,7 +46,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Owner.Email)
+            @Html.DisplayFor(modelItem => item.Owner.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Receiver.FirstName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Type)
@@ -58,17 +63,14 @@
         <td>
             @Html.DisplayFor(modelItem => item.FilePath)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.FileLink)
-        </td>
+        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.Comment)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ReadByReciever)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GroupId)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.FileId }) |
