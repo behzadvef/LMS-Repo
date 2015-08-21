@@ -10,6 +10,7 @@ using LMS_Proj.Models;
 
 namespace LMS_Proj.Controllers
 {
+    [Authorize]
     public class ActivitiesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

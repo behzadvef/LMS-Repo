@@ -11,6 +11,7 @@ using System.IO;
 
 namespace LMS_Proj.Controllers
 {
+    [Authorize]
     public class GroupsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
