@@ -8,6 +8,13 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/LMS/css")
+    <style>
+        .carousel-inner > .item > img,
+        .carousel-inner > .item > a > img {
+            width: 70%;
+            margin: auto;
+        }
+    </style>
 </head>
 <body>
     @*<div class="navbar navbar-inverse navbar-fixed-top">*@
@@ -25,7 +32,7 @@
                 </a>*@
             @*</div>*@
             <div class="navbar-collapse collapse">
-        @*<ul class="nav navbar-nav">
+        <ul class="nav navbar-nav">
                     <li class="text-center">
                         <a href="@Url.Action("Index", "Home")">
                             <span class="glyphicon glyphicon-home"></span>
@@ -45,7 +52,7 @@
                         </a>
                     </li>
   
-        </ul>*@
+        </ul>
             @Html.Partial("_LoginPartial")
     </div>
 

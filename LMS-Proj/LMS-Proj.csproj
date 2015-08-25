@@ -190,10 +190,14 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\apple-touch-icon.png" />
+    <Content Include="Images\apple.jpg" />
     <Content Include="Images\bg-header.png" />
     <Content Include="Images\favicon.ico" />
+    <Content Include="Images\Kurssal-IT.jpg" />
     <Content Include="Images\logo-lexicon%402x.gif" />
+    <Content Include="Images\planera.jpg" />
     <Content Include="Images\sprite-icons.png" />
+    <Content Include="Images\utbildning.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2-vsdoc.js" />
