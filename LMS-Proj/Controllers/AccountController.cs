@@ -154,13 +154,52 @@ namespace LMS_Proj.Controllers
             return new SelectList((IEnumerable<SelectListItem>)_list, "Value", "Text");
         }
 
+
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        [AllowAnonymous]
-        public ActionResult UserList()
+
+
+        public ActionResult UserList(int? GroupId)
         {
-            var UserList = db.Users;
-            return View(UserList.ToList());
+
+
+
+            var currentUserId = User.Identity.GetUserId();
+
+            var currentUser = db.Users.Find(currentUserId);
+
+            var currentGroupId = currentUser.GroupId;
+
+            List<ApplicationUser> UserList;
+            List<Group> group;
+
+            if (User.IsInRole("admin")) 
+            {
+                UserList = db.Users.ToList();
+                group = db.Groups.ToList();
+            }
+            else
+            {
+                UserList = db.Users.Where(u => u.GroupId == currentGroupId).ToList();
+                group = (db.Groups.Where(g => g.GroupID == currentGroupId)).ToList();
+            }
+            
+            if (GroupId!= null)
+            {
+                UserList = UserList.Where(u => u.GroupId == GroupId).ToList();
+            }
+
+            if (User.IsInRole("admin"))
+            {
+                ViewBag.GroupId = AddFirstItem(new SelectList(group, "GroupID", "GroupName"));
+            }
+            else
+            {
+                ViewBag.GroupId = new SelectList(group, "GroupID", "GroupName");
+            }
+
+            // var UserList = db.Users;.Where(u=>u.GroupId == GroupId) ;
+            return View(UserList);
         }
 
         // GET: Account/Delete
@@ -214,7 +253,7 @@ namespace LMS_Proj.Controllers
 
                 var DeletedFilesHeirId = (db.Users.First(a => a.UserName == "DeletedFilesHeir@admin.com")).Id;
 
-                foreach( File file in db.Files)
+                foreach (File file in db.Files)
                 {
                     if (file.OwnerId == id)
                         file.OwnerId = DeletedFilesHeirId;
@@ -237,12 +276,12 @@ namespace LMS_Proj.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser  user = db.Users.Find(id);
+            ApplicationUser user = db.Users.Find(id);
             if (user == null)
             {
                 return HttpNotFound();
             }
-           
+
             ViewBag.GroupId = new SelectList(db.Groups, "GroupID", "GroupName", user.GroupId);
             return View(user);
         }
@@ -252,14 +291,14 @@ namespace LMS_Proj.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id, FirstName, LastName, Email, UserName, GroupId")] ApplicationUser  user)
+        public ActionResult Edit([Bind(Include = "Id, FirstName, LastName, Email, UserName, GroupId")] ApplicationUser user)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("UserList");
-            }          
+            }
             ViewBag.GroupId = new SelectList(db.Groups, "GroupID", "GroupName", user.GroupId);
             return View(user);
         }
