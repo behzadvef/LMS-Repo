@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LMS_Proj.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace LMS_Proj.Controllers
 {
@@ -40,10 +42,32 @@ namespace LMS_Proj.Controllers
         public ActionResult Index(string Name, int? GroupId, int? FileId)
         {
 
-            //var activities = db.Activities.Include(a => a.Attachment).Include(a => a.Groups).Include(a => a.Timesheet);
-            //return View(activities.ToList());
-            var activities = from s in db.Activities.Include(s => s.Attachment).Include(s => s.Groups)
+            var currentUserId = User.Identity.GetUserId();
+
+            var currentUser = db.Users.Find(currentUserId);
+
+            var currentGroupId = currentUser.GroupId;
+           
+
+            IQueryable<Activity> activities;
+            IQueryable<Group> Groups;
+
+            if (User.IsInRole("admin"))
+            {
+                activities = from s in db.Activities.Include(s => s.Attachment).Include(s => s.Groups)
                              select s;
+                Groups = from gr in db.Groups
+                             select gr;
+            }
+            else
+            {
+                activities = from s in db.Activities.Where(a=>a.GroupId == currentGroupId).Include(s => s.Attachment).Include(s => s.Groups)
+                             select s;
+                Groups = db.Groups.Where(g=>g.GroupID == currentGroupId);
+//                    from gr in db.Groups.Where(GroupId == currentGroupId) select gr;
+            }
+
+
 
 
             if (!String.IsNullOrEmpty(Name))
@@ -56,8 +80,7 @@ namespace LMS_Proj.Controllers
             {
                 activities = activities.Where(s => s.GroupId == GroupId);
             }
-            var Groups = from gr in db.Groups
-                         select gr;
+
             List<Group> group = new List<Group>();
             Group groupType = new Group();
             groupType.GroupID = 0;

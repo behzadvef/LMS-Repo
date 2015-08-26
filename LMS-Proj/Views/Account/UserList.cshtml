@@ -1,31 +1,57 @@
 ﻿@model IEnumerable<LMS_Proj.Models.ApplicationUser>
 
 
-@*@{
-        ViewBag.Title = "UserList";
-    }*@
+@using (Html.BeginForm("UserList", null, FormMethod.Get))
+{
+    <h2>User List</h2>
+    if (User.IsInRole("admin"))
+    {
+        @Html.ActionLink("Register New Account", "Register")
+    }
+    <div class="form-group">
+        <text>Group Name : </text>@Html.DropDownList("GroupId", null, htmlAttributes: new { @class = "form-control" })
+        <input type="submit" value="Filter" id="btnSubmit" />
+    </div>
+}
 
 
+@{
+    ViewBag.Title = "UserList";
+}
 
-<p>
-    @*@Html.ActionLink("Create New Account", "Register")*@
+@*<p>
+      <h2>User List</h2>
+    @Html.ActionLink("Create New Account", "Register")
     @using (Html.BeginForm("UserList", "Account", FormMethod.Get))
     {
         <h3>UserList</h3>
         @Html.ActionLink("Create New Account", "Register")
+       
+      <div class="form-group">
+          @*<text>Group: </text><input type="text" name="GroupId" />&nbsp;
+          @Html.DropDownList("GroupId", null, htmlAttributes: new { @class = "form-control" })
+          <input type="submit" value="Search" id="btnSubmit" />
+      </div>*@
 
-    }
-</p>
+@*<div class="form-group">
+                @Html.LabelFor(model => model.ReceiverId, "Receiver", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("ReceiverId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ReceiverId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+    </p>*@
+
 <table class="table table-striped table-hover table-responsive table-condensed">
     <tr class="success">
         <th>
-            <h3 style="font-size:large"><span style="font-weight:bolder"> @Html.DisplayNameFor(model => model.FirstName)</span></h3>
+            <h3 style="font-size:medium"><span style="font-weight:bold">@Html.DisplayNameFor(model => model.FirstName)</span></h3>
         </th>
         <th>
-            <h3 style="font-size:large"><span style="font-weight:bolder"> @Html.DisplayNameFor(model => model.LastName)</span></h3>
+            <h3 style="font-size:medium"><span style="font-weight:bold"> @Html.DisplayNameFor(model => model.LastName)</span></h3>
         </th>
         <th>
-            <h3 style="font-size:large"><span style="font-weight:bolder">  @Html.DisplayNameFor(model => model.Email)</span></h3>
+            <h3 style="font-size:medium"><span style="font-weight:bold"> @Html.DisplayNameFor(model => model.Email)</span></h3>
         </th>
         @*<th>
                 @Html.DisplayNameFor(model => model.EmailConfirmed)
@@ -55,13 +81,13 @@
                 @Html.DisplayNameFor(model => model.AccessFailedCount)
             </th>*@
         <th>
-            <h3 style="font-size:large"><span style="font-weight:bolder"> @Html.DisplayNameFor(model => model.UserName)</span></h3>
+            <h3 style="font-size:medium"><span style="font-weight:bold">  @Html.DisplayNameFor(model => model.UserName)</span></h3>
         </th>
         <th>
-            <h3 style="font-size:large"><span style="font-weight:bolder"> @Html.DisplayNameFor(model => model.GroupId)</span></h3>
+            <h3 style="font-size:medium"><span style="font-weight:bold">  @Html.DisplayNameFor(model => model.GroupId)</span></h3>
         </th>
         <th>
-            <h3 style="font-size:large"><span style="font-weight:bolder"> @Html.DisplayNameFor(model => model.Groups.GroupName)</span></h3>
+            <h3 style="font-size:medium"><span style="font-weight:bold">  @Html.DisplayNameFor(model => model.Groups.GroupName)</span></h3>
         </th>
         <th></th>
     </tr>
@@ -70,13 +96,13 @@
     {
         <tr>
             <td class="col-lg-2">
-                <span style="font-size: 17px;">  @Html.DisplayFor(modelItem => item.FirstName)</span>
-            </td>
+                <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.FirstName)</span>
+</td>
             <td class="col-lg-2">
-                <span style="font-size: 17px;">  @Html.DisplayFor(modelItem => item.LastName)</span>
-            </td>
-            <td class="col-lg-1">
-                <span style="font-size: 17px;">   @Html.DisplayFor(modelItem => item.Email)</span>
+                <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.LastName)</span>
+</td>
+            <td class="col-lg-2">
+                <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.Email)</span>
             </td>
             @*<td>
                     @Html.DisplayFor(modelItem => item.EmailConfirmed)
@@ -105,33 +131,35 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.AccessFailedCount)
                 </td>*@
-            <td class="col-lg-1">
-                <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.UserName)</span>
-            </td>
             <td class="col-lg-2">
-                <span style="font-size: 17px;"> @Html.DisplayFor(modelItem => item.GroupId)</span>
-            </td>
-            <td class="col-lg-3">
+                <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.UserName)</span>
+</td>
+            <td class="col-lg-2">
+                <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.GroupId)</span>
+</td>
+            <td class="col-lg-2">
                 <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.Groups.GroupName)</span>
-            </td>
-            @*<td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>*@
-            <td class="col-lg-18">
-                @if (User.IsInRole("admin"))
-                { 
-                    <button type="button" class="btn btn-warning col-lg-10" onclick="location.href='@Url.Action("Edit", "Account", new { id = item.Id })';return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-pencil"></span>Edit</button>
-                }
-                    <button type="button" class="btn btn-info col-lg-12 col-lg-offset-1" onclick="location.href='@Url.Action("Details", "Account", new { id = item.Id})';return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-align-justify"></span>Details</button>
+</td>
+            <td class="col-lg-3">
 
                 @if (User.IsInRole("admin"))
                 {
-                        <button type="button" class="btn btn-danger col-lg-12 col-lg-offset-1" onclick="location.href='@Url.Action("Delete", "Account", new { id = item.Id })' ;return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-trash"></span>Delete</button>
+                    @*@Html.ActionLink("Edit", "Edit", new { id = item.Id })*@
+                    <button type="button" class="btn btn-warning col-lg-3" onclick="location.href='@Url.Action("Edit", "Account", new { id = item.Id })';return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-pencil"></span>Edit</button>
                 }
-                    </td>
-                </tr>
+
+                @*@Html.ActionLink("Details", "Details", new { id = item.Id })*@
+                <button type="button" class="btn btn-info col-lg-4 col-lg-offset-1" onclick="location.href='@Url.Action("Details", "Account", new { id = item.Id })';return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-align-justify"></span>Details</button>
+
+                @if (User.IsInRole("admin"))
+                {
+                    @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                    <button type="button" class="btn btn-danger col-lg-3 col-lg-offset-1" onclick="location.href='@Url.Action("Delete", "Account", new { id = item.Id })' ;return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-trash"></span>Delete</button>
+
+                }
+
+            </td>
+        </tr>
     }
 
 </table>
