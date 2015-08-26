@@ -123,18 +123,11 @@ namespace LMS_Proj.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "GroupID,MaxMembers,GroupName,ClassLocation,GroupDescription")] Group group, HttpPostedFileBase upload)
+        public ActionResult Create([Bind(Include = "GroupID,MaxMembers,GroupName,ClassLocation,GroupDescription")] Group group)
         {
             if (ModelState.IsValid)
             {
-                if (upload != null && upload.ContentLength > 0)
-                {
-                    var uploadFile = new BinaryWriter(System.IO.File.Open(Server.MapPath("/Documents/Files/") + upload.FileName, System.IO.FileMode.Create));
-                    using (var reader = new BinaryReader(upload.InputStream))
-                    {
-                        uploadFile.Write(reader.ReadBytes(upload.ContentLength));
-                    }
-                }
+                
                 db.Groups.Add(group);
                 db.SaveChanges();
                 return RedirectToAction("Index");
