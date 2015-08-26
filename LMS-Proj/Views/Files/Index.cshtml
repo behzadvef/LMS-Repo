@@ -18,8 +18,11 @@
 
         <div class="form-horizontal">
             <h3>File List</h3>
-            @Html.ActionLink("Create New", "Create")
-            
+            @Html.ActionLink("Create New File", "Create")
+            <div class="form-group">
+                <text>Group Name:</text>@Html.DropDownList("GroupId", null, htmlAttributes: new { @class = "form-control" })
+                <input type="submit" value="Filter" id="btnSubmit" />
+            </div>
 
         </div>
 

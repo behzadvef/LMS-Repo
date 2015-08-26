@@ -1,144 +1,17 @@
 ﻿@{
-    ViewBag.Title = "Contact Us";
+    ViewBag.Title = "Contact";
 }
-
+<h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
-@*<address>
-        One Microsoft Way<br />
-        Redmond, WA 98052-6399<br />
-        <abbr title="Phone">P:</abbr>
-        425.555.0100
-    </address>
+<address>
+    Lexicon AB<br />
+    Årstaängsvägen 9<br />
+    <abbr title="Phone">P:</abbr>
+    425.555.0100
+</address>
 
-    <address>
-        <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-        <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-    </address>*@
-<div class="container-fluid">
-    <div class="row">
-
-        <div class="col-sm-5 col-sm-offset-1">
-
-            @*<h2><strong>@ViewBag.Title.</strong></h2>*@
-
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <div class="col-xs-4">
-                        <input class="form-control" id="firstName" name="firstName" placeholder="First Name" required="" type="text">
-                    </div>
-                    <div class="col-xs-4">
-                        <input class="form-control" id="lastName" name="lastName" placeholder="Last Name" required="" type="text">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-xs-5">
-                        <input class="form-control" name="email" placeholder="Email" required="" type="email">
-                    </div>
-                    <div class="col-xs-5">
-                        <input class="form-control" name="phone" placeholder="Phone" required="" type="tel">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-xs-10">
-                        <input class="form-control" placeholder="Website URL" required="" type="homepage">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-xs-10">
-                        <button class="btn btn-primary pull-right">Submit</button>
-                    </div>
-                </div>
-            </form>
-            <hr>
-            <div class="row">
-                <div class="col-xs-6">
-                    <h1>Sweden</h1>
-                    <address>
-                        <strong>Lexicon Stockholm Fastighet</strong><br>
-                        100 Business Address<br>
-                        Årstaängsvägen 9<br>
-                        117 43 Stockholm<br>
-                        <abbr title="Phone">P:</abbr>08-440 71 60
-                    </address>
 <address>
     <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:infoAF@lexicon.se">infoAF@lexicon.se</a>
+    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
 </address>
-                </div>
-                <div class="col-xs-6">
-                    <h1>Skåne</h1>
-                    <address>
-                        <strong>Lexicon Malmö</strong><br>
-                        Södergatan 24<br>
-                        211 34 Malmö<br>
-                        <br>
-
-                        <abbr title="Phone">P:</abbr>040-665 56 50
-                    </address>
-                    <address>
-                        <strong>Marketing:</strong> <a href="mailto:infoAF@lexicon.se">infoAF@lexicon.se</a>
-                    </address>
-                </div><!--/col-6-->
-            </div><!--/row-->
-        </div><!--/col-5-->
-        <div class="col-sm-6 map">
-            <div class="google-map-canvas" id="map-canvas">
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--Google Maps API-->
-
-
-@{
-    var variabletobeused = "Lexicon-IT";
-}
-<div style="display:inline-block;clear: left">
-<div class="col-md-6">
-    <iframe width="600"
-            height="450"
-            frameborder="0" style="border:0"
-            src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d16277.017950176973!2d18.048226949999986!3d59.33917695!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1zTGV4aWNvbiBJVC1rb25zdWx0LMOFcnN0YcOkbmdzdsOkZ2VuIDk!5e0!3m2!1ssv!2sse!4v1440500803395"></iframe>
-
-</div>
-    </div>
-@*<script>
-    function initialize() {
-        var mapOptions = {
-            center: new google.maps.LatLng(51.503454, -0.119562),
-            zoom: 8,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-
-
-
-        var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-
-        var markers = [
-              ['London Eye, London', 51.503454, -0.119562],
-              ['Palace of Westminster, London', 51.499633, -0.124755]
-        ];
-
-
-        // markers & place each one on the map
-        for (i = 0; i < markers.length; i++) {
-            var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
-            bounds.extend(position);
-            marker = new google.maps.Marker({
-                position: position,
-                map: map,
-                title: markers[i][0]
-            });
-
-
-
-            // Automatically center the map fitting all markers on the screen
-            map.fitBounds(bounds);
-        }
-
-    }
-
-    google.maps.event.addDomListener(window, 'load', initialize);
-</script>*@

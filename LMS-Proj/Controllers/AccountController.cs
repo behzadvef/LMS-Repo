@@ -140,7 +140,7 @@ namespace LMS_Proj.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
+        [Authorize(Roles = "admin")]
         public ActionResult Register()
         {
             ViewBag.GroupId = AddFirstItem(new SelectList(db.Groups, "GroupId", "GroupName"));
@@ -257,6 +257,8 @@ namespace LMS_Proj.Controllers
                 {
                     if (file.OwnerId == id)
                         file.OwnerId = DeletedFilesHeirId;
+                    if (file.ReceiverId == id)
+                        file.ReceiverId = DeletedFilesHeirId;
                 }
                 db.SaveChanges();
                 await UserManager.DeleteAsync(user);
@@ -350,7 +352,7 @@ namespace LMS_Proj.Controllers
                     //                    context.SaveChanges();
 
 
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+//                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -359,7 +361,7 @@ namespace LMS_Proj.Controllers
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("UserList", "Account");
                 }
                 AddErrors(result);
             }

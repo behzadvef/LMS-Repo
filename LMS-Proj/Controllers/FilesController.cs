@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using LMS_Proj.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity;
+using System.Collections.ObjectModel;
 
 namespace LMS_Proj.Controllers
 {
@@ -18,10 +19,59 @@ namespace LMS_Proj.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Files
-        public ActionResult Index()
+        public ActionResult Index(int? GroupId)
         {
-            var files = db.Files.Include(f => f.Owner).Include(f => f.Receiver);
-            return View(files.ToList());
+
+
+            var currentUserId = User.Identity.GetUserId();
+
+            var currentUser = db.Users.Find(currentUserId);
+
+            var currentGroupId = currentUser.GroupId;
+
+            List<File> FileList;
+            List<Group> group;
+
+            if (User.IsInRole("admin"))
+            {
+                FileList = db.Files.ToList();
+                group = db.Groups.ToList();
+            }
+            else
+            {
+                FileList = db.Files.Where(f => f.Groups.Any(g => g.GroupID == currentGroupId)).ToList();
+                group = (db.Groups.Where(g => g.GroupID == currentGroupId)).ToList();
+            }
+
+            if (GroupId != null)
+            {
+                FileList = FileList.Where(f => f.Groups.Any(g => g.GroupID == GroupId)).ToList();
+            }
+
+            if (User.IsInRole("admin"))
+            {
+                ViewBag.GroupId = AddFirstItem(new SelectList(group, "GroupID", "GroupName"));
+            }
+            else
+            {
+                ViewBag.GroupId = new SelectList(group, "GroupID", "GroupName");
+            }
+
+            //            List<File> files ;
+            //            var groups = db.Groups.Where(g=>g.GroupID == currentGroupId);
+            //            var group = groups.First();
+
+            //            if (User.IsInRole("admin"))
+            //            {
+            //                files = db.Files.Include(f => f.Owner).Include(f => f.Receiver).ToList();
+            //            }
+            //            else
+            //            {
+            ////                files = db.Files.Include(f => f.Owner).Include(f => f.Receiver).Where(f=>(f.Owner== User) || f.Groups.Where(h=>h.GroupID == currentGroupId)).ToList();
+            //            }
+
+
+            return View(FileList);
         }
 
         // GET: Files/Details/5
@@ -74,7 +124,7 @@ namespace LMS_Proj.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,ReceiverId,OwnerId, Groups ")] File file, HttpPostedFileBase uploadfiles)
+        public ActionResult Create([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,ReceiverId,OwnerId, Groups ")] File file, HttpPostedFileBase uploadfiles, int? GroupId)
         {
             if (ModelState.IsValid)
             {
@@ -103,21 +153,21 @@ namespace LMS_Proj.Controllers
                 //    ViewBag.Message = "Error While uploading the files.";
                 //}
 
-               // foreach (var Upload in uploadfiles)
-              //  {
-                    //var allowedExtensions = new[] { ".doc", ".xlsx", ".txt", ".jpeg" };
-                    //var extension = System.IO.Path.GetExtension(file.FileName);
-                    //if (!allowedExtensions.Contains(extension))
-                    //{
-                    //    // Not allowed
-                    //}
-                    // if(uploadfiles.ContentLength > 0)
-                    //{
-                    //var fileName = System.IO.Path.GetFileName(file.FileName);
-                    //var path = System.IO.Path.Combine(Server.MapPath("~/Documents/Files"), fileName);
-                    //uploadfiles.SaveAs(path);
-                    // }
-              //  }
+                // foreach (var Upload in uploadfiles)
+                //  {
+                //var allowedExtensions = new[] { ".doc", ".xlsx", ".txt", ".jpeg" };
+                //var extension = System.IO.Path.GetExtension(file.FileName);
+                //if (!allowedExtensions.Contains(extension))
+                //{
+                //    // Not allowed
+                //}
+                // if(uploadfiles.ContentLength > 0)
+                //{
+                //var fileName = System.IO.Path.GetFileName(file.FileName);
+                //var path = System.IO.Path.Combine(Server.MapPath("~/Documents/Files"), fileName);
+                //uploadfiles.SaveAs(path);
+                // }
+                //  }
                 //if (Request.Files != null)
                 //{
                 //    foreach (string requestFile in Request.Files)
@@ -139,7 +189,16 @@ namespace LMS_Proj.Controllers
 
                 var tempUserId = User.Identity.GetUserId();
                 var tempUser = db.Users.Where(u => u.Id == tempUserId).First();
-                file.Owner= tempUser;
+                file.Owner = tempUser;
+                var grp = db.Groups.Find(GroupId);
+                if (grp != null)
+                {
+                    file.Groups = db.Groups.Where(g => g.GroupID == GroupId).ToList();
+                    //file.Groups = new Collection<Group>();
+                    //file.Groups.Add(grp);
+                }
+
+
                 file.SubmissionDate = DateTime.Now;
                 db.Files.Add(file);
                 db.SaveChanges();
@@ -178,7 +237,7 @@ namespace LMS_Proj.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,ReceiverId,OwnerId, Groups")] File file )
+        public ActionResult Edit([Bind(Include = "FileId,Type,SubmissionDate,FileName,FilePath,FileLink,Comment,ReadByReciever,ReceiverId,OwnerId, Groups")] File file)
         {
             if (ModelState.IsValid)
             {
