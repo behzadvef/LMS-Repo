@@ -40,12 +40,12 @@
         <th>
             <h3 style="font-size:large"><span style="font-weight:bolder">@Html.DisplayNameFor(model => model.StartDate)</span></h3>
         </th>
-        <th>
-            <h3 style="font-size:large"><span style="font-weight:bolder">@Html.DisplayNameFor(model => model.EndDate)</span></h3>
-        </th>
-        <th>
-            <h3 style="font-size:large"><span style="font-weight:bolder">@Html.DisplayNameFor(model => model.Name)</span></h3>
-        </th>
+        @*<th>
+            <h3 style="font-size:large"><span style="font-weight:bolder">@Html.DisplayNameFor(model => model.Groups.GroupName)</span></h3>
+        </th>*@
+        @*<th>
+            <h3 style="font-size:large"><span style="font-weight:bolder">@Html.DisplayNameFor(model => model.Groups.GroupDescription)</span></h3>
+        </th>*@
         <th>
             <h3 style="font-size:large"><span style="font-weight:bolder">@Html.DisplayNameFor(model => model.Description)</span></h3>
         </th>
@@ -82,12 +82,11 @@
             <td class="col-lg-2">
                 <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.Groups.GroupName)</span>
             </td>
-            <td class="col-lg-4">
-                <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.Groups.GroupDescription)</span>
+            <td class="col-lg-3">
+                <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.Description)</span>
             </td>
-
-            <td class="col-lg-18">
-                <button type="button" class="btn btn-warning col-lg-10" onclick="location.href='@Url.Action("Edit", "Activities", new { id = item.ActivityId })';return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-pencil"></span>Edit</button>
+            <td class="col-lg-5">
+                <button type="button" class="btn btn-warning col-lg-5" onclick="location.href='@Url.Action("Edit", "Activities", new { id = item.ActivityId })';return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-pencil"></span>Edit</button>
 
                 <button type="button" class="btn btn-info col-lg-6 col-md-offset-1" onclick="location.href='@Url.Action("Details", "Activities", new { id = item.ActivityId })';return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-align-justify"></span>Details</button>
 
